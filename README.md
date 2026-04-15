@@ -81,6 +81,6 @@ Licensed under the MIT License.
 
 ## License
 
-Copyright © 2021 Shahed Nasser and 2026 Azhar
+Copyright © 2021 Shahed Nasser and 2026 Azhar Sayyad
 
 Licensed under the [MIT License](./LICENSE).
