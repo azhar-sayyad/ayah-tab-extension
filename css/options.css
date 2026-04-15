@@ -1,6 +1,6 @@
 /*
 Copyright (c) 2020 by Shahed Nasser. All Rights Reserved.
- */
+*/
 
 html {
   direction: __MSG_@@bidi_dir__;
@@ -8,87 +8,157 @@ html {
 
 body {
   text-align: __MSG_@@bidi_start_edge__ !important;
-}
-
-/* The switch - the box around the slider */
-.switch {
+  background: #eef2f6;
+  color: #1f2b37;
+  min-height: 100vh;
   position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
 }
 
-/* Hide default HTML checkbox */
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
+.page-bg {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(900px 500px at 15% -10%, rgba(16, 111, 73, 0.2), transparent 60%),
+    radial-gradient(900px 500px at 85% 5%, rgba(50, 94, 156, 0.2), transparent 60%),
+    linear-gradient(170deg, #f3f7fb, #eaf0f6);
+  z-index: -1;
 }
 
-/* The slider */
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: .4s;
-  -o-transition: .4s;
-  transition: .4s;
+.options-layout {
+  max-width: 1160px;
 }
 
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: .4s;
-  -o-transition: .4s;
-  transition: .4s;
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 14px 36px rgba(16, 24, 36, 0.1);
+  border-radius: 24px;
+  padding: 1rem 1.2rem;
+  backdrop-filter: blur(7px);
 }
 
-input:checked + .slider {
-  background-color: #025250;
+.page-header .subtitle {
+  color: #526476;
 }
 
-input:focus + .slider {
-  -webkit-box-shadow: 0 0 1px #025250;
-          box-shadow: 0 0 1px #025250;
+.icon.logo {
+  width: 68px;
+  height: 68px;
+  border-radius: 16px;
+  background: #fff;
+  padding: 0.4rem;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.09);
 }
 
-input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
+.settings-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 }
 
-.icon {
-  width: 80px;
-  margin: 0 auto;
-  display: block;
-  float: __MSG_@@bidi_start_edge__;
+.settings-card {
+  background: rgba(255, 255, 255, 0.84);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 1.05rem 1rem;
+  box-shadow: 0 14px 30px rgba(15, 23, 34, 0.08);
+  backdrop-filter: blur(7px);
+}
+
+.settings-card h2 {
+  font-weight: 700;
+}
+
+.settings-card .form-label {
+  font-weight: 600;
+}
+
+.settings-card .form-control,
+.settings-card .form-select {
+  border-color: rgba(95, 116, 137, 0.28);
+}
+
+.settings-card .form-control:focus,
+.settings-card .form-select:focus {
+  border-color: #25764f;
+  box-shadow: 0 0 0 0.22rem rgba(37, 118, 79, 0.16);
+}
+
+.settings-card .form-check-input:checked {
+  background-color: #25764f;
+  border-color: #25764f;
+}
+
+.settings-card .form-check-input:focus {
+  box-shadow: 0 0 0 0.2rem rgba(37, 118, 79, 0.16);
+}
+
+.form-range::-webkit-slider-thumb {
+  background: #25764f;
+}
+
+.form-range::-moz-range-thumb {
+  background: #25764f;
+}
+
+.form-control-color {
+  width: 100%;
+  height: 42px;
+  padding: 0.3rem;
+}
+
+.range-value {
+  color: #3b556f;
+  font-weight: 700;
+}
+
+.save-panel {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 18px;
+  padding: 1rem;
+  box-shadow: 0 10px 26px rgba(14, 22, 35, 0.08);
 }
 
 .btn.btn-dark {
-  background-color: #025250;
-  border-color: #025250;
+  background-color: #25764f;
+  border-color: #25764f;
 }
 
 .btn.btn-dark:hover {
-  background-color: #033130;
-  border-color: #033130;
+  background-color: #1c5c3d;
+  border-color: #1c5c3d;
 }
 
-/* Rounded sliders */
-.slider.round {
-  border-radius: 34px;
+.background-image-preview {
+  display: block;
+  width: min(100%, 280px);
+  max-height: 180px;
+  border-radius: 12px;
+  margin-top: 0.7rem;
+  border: 1px solid rgba(88, 105, 124, 0.38);
+  object-fit: cover;
 }
 
-.slider.round:before {
-  border-radius: 50%;
+.meta-links a {
+  color: #1f5f97;
+  text-decoration: none;
+}
+
+.meta-links a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 700px) {
+  .page-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .settings-grid {
+    grid-template-columns: 1fr;
+  }
 }

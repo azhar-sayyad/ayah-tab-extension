@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>New Tab</title>
     <link rel="stylesheet" href="css/sweetalert2.min.css"  />
     <link rel="stylesheet" href="/css/bootstrap.min.css"  />
@@ -10,9 +11,19 @@
   </head>
   <body>
     <img src='' class="background-image" />
-    <div class="reload toolbar-link" data-bs-toggle="tooltip" title="__MSG_reload__">
-      <img src="assets/reload.svg" alt="Reload"  />
-      <div class="loader hide"></div>
+    <div class="top-toolbar">
+      <div class="reload toolbar-link" data-bs-toggle="tooltip" title="__MSG_reload__">
+        <img src="assets/reload.svg" alt="Reload"  />
+        <div class="loader hide"></div>
+      </div>
+      <img src="assets/heart.svg" alt="Favorites" class="favorites-btn toolbar-link"
+        data-bs-toggle="offcanvas" data-bs-target="#favoriteVerses" aria-controls="favoriteVerses" />
+      <a href="https://chrome.google.com/webstore/detail/quran-in-new-tab/hggkcijghhpkdjeokpfgbhnpecliiijg"
+        data-bs-toggle="tooltip" title="__MSG_rate_extension__" class="rate-link toolbar-link">
+        <img src="assets/star.svg" alt="Rate This Extension" />
+      </a>
+      <img src="assets/calendar.svg" alt="Calendar" class="calendar-btn toolbar-link" data-bs-toggle="tooltip" title="__MSG_calendar__"  />
+      <img src="assets/settings.svg" alt="Settings" class="settings-link toolbar-link" data-bs-toggle="tooltip" title="__MSG_settings__"  />
     </div>
     <div class="prayer-times-container d-none">
       <h6 class="text-center mb-3">
@@ -21,14 +32,6 @@
       </h6>
       <div class="prayer-times-wrapper"></div>
     </div>
-    <img src="assets/heart.svg" alt="Favorites" class="favorites-btn toolbar-link" 
-      data-bs-toggle="offcanvas" data-bs-target="#favoriteVerses" aria-controls="favoriteVerses" />
-    <a href="https://chrome.google.com/webstore/detail/quran-in-new-tab/hggkcijghhpkdjeokpfgbhnpecliiijg"
-      data-bs-toggle="tooltip" title="__MSG_rate_extension__" class="rate-link toolbar-link">
-      <img src="assets/star.svg" alt="Rate This Extension" />
-    </a>
-    <img src="assets/calendar.svg" alt="Calendar" class="calendar-btn toolbar-link" data-bs-toggle="tooltip" title="__MSG_calendar__"  />
-    <img src="assets/settings.svg" alt="Settings" class="settings-link toolbar-link" data-bs-toggle="tooltip" title="__MSG_settings__"  />
     <div class="date-container">
       <div class="gregorian-date">
       </div>

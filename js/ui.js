@@ -13,6 +13,24 @@ const renderState = {
   calendarKey: ""
 };
 
+const APPEARANCE_PALETTES = Object.freeze({
+  emerald: {
+    accent: "#2e8b57"
+  },
+  ocean: {
+    accent: "#1f7aa3"
+  },
+  amber: {
+    accent: "#b57f1b"
+  },
+  rose: {
+    accent: "#9a5167"
+  },
+  slate: {
+    accent: "#4f647b"
+  }
+});
+
 export function initializeUI(handlers = {}) {
   document.documentElement.setAttribute("lang", chrome.i18n.getUILanguage());
   localizeHtmlPage(document.body);
@@ -84,6 +102,38 @@ export function initializeUI(handlers = {}) {
       dismissElements(target.getAttribute("data-bs-dismiss"));
     }
   });
+}
+
+export function applyAppearanceSettings(settings = {}) {
+  const paletteKey =
+    typeof settings.theme_preset === "string" && APPEARANCE_PALETTES[settings.theme_preset]
+      ? settings.theme_preset
+      : "emerald";
+  const palette = APPEARANCE_PALETTES[paletteKey];
+  const customAccent = normalizeHexColor(settings.accent_color);
+  const accentColor = customAccent || palette.accent;
+  const accentRgb = hexToRgb(accentColor) || hexToRgb(palette.accent) || "46, 139, 87";
+
+  document.documentElement.dataset.themePreset = paletteKey;
+  document.documentElement.style.setProperty("--accent-color", accentColor);
+  document.documentElement.style.setProperty("--accent-rgb", accentRgb);
+  document.documentElement.style.setProperty(
+    "--card-opacity",
+    String(clampNumber(settings.card_opacity, 40, 96, 78) / 100)
+  );
+  document.documentElement.style.setProperty(
+    "--background-dimness",
+    String(clampNumber(settings.background_dimness, 25, 78, 52) / 100)
+  );
+  document.documentElement.style.setProperty(
+    "--verse-font-size",
+    `${clampNumber(settings.verse_font_size, 22, 48, 30)}px`
+  );
+
+  const bismillahElm = document.querySelector(".bismillah");
+  if (bismillahElm) {
+    bismillahElm.classList.toggle("hide", settings.show_bismillah === false);
+  }
 }
 
 export function setReloadState(isLoading) {
@@ -737,4 +787,44 @@ function hideElement(element) {
 
 function showElement(element) {
   element?.classList.remove("hide");
+}
+
+function clampNumber(value, min, max, fallback) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) {
+    return fallback;
+  }
+
+  return Math.min(max, Math.max(min, Math.round(number)));
+}
+
+function normalizeHexColor(value) {
+  if (typeof value !== "string") {
+    return "";
+  }
+
+  const normalized = value.trim().toLowerCase();
+  if (/^#[\da-f]{6}$/.test(normalized)) {
+    return normalized;
+  }
+
+  if (/^#[\da-f]{3}$/.test(normalized)) {
+    const [r, g, b] = normalized.slice(1).split("");
+    return `#${r}${r}${g}${g}${b}${b}`;
+  }
+
+  return "";
+}
+
+function hexToRgb(hexValue) {
+  const hex = normalizeHexColor(hexValue);
+  if (!hex) {
+    return "";
+  }
+
+  const value = hex.slice(1);
+  const red = Number.parseInt(value.slice(0, 2), 16);
+  const green = Number.parseInt(value.slice(2, 4), 16);
+  const blue = Number.parseInt(value.slice(4, 6), 16);
+  return `${red}, ${green}, ${blue}`;
 }

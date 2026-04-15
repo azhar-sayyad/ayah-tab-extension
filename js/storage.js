@@ -19,7 +19,13 @@ const DEFAULT_SETTINGS = Object.freeze({
   show_search: true,
   favorite_verses: [],
   background_image_type: "default",
-  background_image_type_options: ""
+  background_image_type_options: "",
+  theme_preset: "emerald",
+  accent_color: "#2e8b57",
+  card_opacity: 78,
+  background_dimness: 52,
+  verse_font_size: 30,
+  show_bismillah: true
 });
 
 function storageGet(area, keys) {

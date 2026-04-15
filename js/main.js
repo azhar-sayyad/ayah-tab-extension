@@ -13,6 +13,7 @@ import {
 } from "./api.js";
 import { getCache, getSettings, saveSettings, setCache } from "./storage.js";
 import {
+  applyAppearanceSettings,
   confirmTopSiteRemoval,
   hideAthkar,
   hidePrayerTimes,
@@ -116,6 +117,13 @@ async function initialize() {
 
 // Applies static visibility/configuration settings that do not require network data.
 function applySettingsToStaticUI() {
+  applyAppearanceSettings(state.settings);
+
+  const dateContainer = document.querySelector(".date-container");
+  if (dateContainer) {
+    dateContainer.classList.toggle("hide", state.settings.show_date === false);
+  }
+
   if (state.settings.show_search !== false) {
     renderSearchBar();
   }

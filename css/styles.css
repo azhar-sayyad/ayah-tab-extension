@@ -1,606 +1,720 @@
 /*
 Copyright (c) 2021 by Shahed Nasser. All Rights Reserved.
- */
+*/
 
 @font-face {
   src: url(me_quran.ttf);
   font-family: QuranFont;
 }
 
+:root {
+  --accent-color: #2e8b57;
+  --accent-rgb: 46, 139, 87;
+  --card-opacity: 0.78;
+  --background-dimness: 0.52;
+  --verse-font-size: 30px;
+  --surface-blur: 18px;
+  --surface-radius: 22px;
+  --surface-bg: rgba(8, 16, 26, var(--card-opacity));
+  --surface-soft: rgba(8, 16, 26, calc(var(--card-opacity) - 0.12));
+  --surface-border: 1px solid rgba(255, 255, 255, 0.24);
+  --text-main: #f5f7fa;
+  --text-soft: rgba(245, 247, 250, 0.84);
+  --text-muted: rgba(245, 247, 250, 0.65);
+}
+
 html {
   direction: __MSG_@@bidi_dir__;
+  min-height: 100%;
 }
 
 body {
-  color: #fff;
+  color: var(--text-main);
   position: relative;
   margin: 0;
   min-height: 100vh;
   overflow-x: hidden;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  background-color: #2d2d2d;
+  justify-content: flex-start;
+  padding: 0 0 2.5rem;
+  background-color: #1b2230;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(
+      1300px 550px at 50% -15%,
+      rgba(var(--accent-rgb), 0.45),
+      rgba(6, 10, 16, 0)
+    ),
+    linear-gradient(
+      175deg,
+      rgba(6, 12, 20, calc(var(--background-dimness) - 0.12)) 0%,
+      rgba(6, 12, 20, var(--background-dimness)) 38%,
+      rgba(6, 10, 16, calc(var(--background-dimness) + 0.1)) 100%
+    );
+  z-index: -1;
+  pointer-events: none;
 }
 
 .background-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  min-width: 100%;
+  position: fixed;
+  inset: 0;
+  width: 100%;
   height: 100%;
+  object-fit: cover;
   opacity: 0;
   z-index: -2;
-  filter: brightness(50%);
-  transition: opacity .5s;
+  transition: opacity 0.6s ease;
 }
 
-.background-image.show,
-.verse.show {
+.background-image.show {
   opacity: 1;
 }
 
-.verse, .bismillah, .athkar-container, .prayer-times-container, .next-prayer {
-  font-family: QuranFont, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-}
-
-.verse {
-  font-size: 30px;
-  width: 70%;
-  text-align: center;
-  line-height: 210%;
-  word-spacing: 10px;
-}
-
-.search-bar {
-  width: 100%;
-  border-radius: 10px;
-  padding: 7px;
-  color: #fff;
-  border: 0;
-}
-
-.search-bar::placeholder {
-  color: #fff;
-  opacity: .5;
-}
-
-.search-bar:focus {
-  outline: none;
-}
-
-.athkar-container {
-  width: 70%;
-  text-align: center;
-  padding: 5px 15px 5px 15px;
-  border: 2px solid gray;
-  border-radius: 10px;
-  margin: 30px auto 60px;
-}
-@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-  .athkar-container, .search-bar {
-    -webkit-backdrop-filter: blur(1.2rem);
-    backdrop-filter: blur(1.2rem);
-    background-color: rgba(255, 255, 255, 0.2);  
-  }
-}
-
-.athkar-container .thikr-arabic {
-  font-size: 25px;
-  word-spacing: 10px;
-  line-height: 210%;
-  direction: rtl;
-  display: block;
-  margin-bottom: 5px;
-}
-
-.athkar-container .thikr-english,
-.athkar-container .thikr-ar-en {
-  display: block;
-  font-size: 17px;
-  word-spacing: 4px;
-  margin-bottom: 15px;
-}
-.thikr-translation-title, .thikr-transliteration-title{
-  font-size: 1.2rem;
-  font-weight: 600;
-}
-
-.thikr-ar-en{
-  font-style: italic;
-}
-.verse {
-  opacity: 0;
-  margin: 10px auto;
-  transition: opacity .5s;
-}
-
-.verse-details, .bismillah {
-  font-size: 20px;
-}
-
-.audio-player img,
-.verse-social-links a {
-  opacity: .5;
-  transition: opacity .2s;
-}
-
-.audio-player img:hover,
-.verse-social-links a:hover {
-  opacity: 1;
-}
-
-.audio-player img {
-  width: 50px;
-  height: 50px;
-  cursor: pointer;
-  display: block;
-  margin: 4px auto;
-}
-
-
-.translation-container {
-  display: flex;
-  flex-flow: column;
-  justify-content: center;
-  text-align: center;
-  transition: all .2s;
-  __MSG_@@bidi_start_edge__: 0;
-}
-
-.translation-container .title {
-  font-size: 20px;
-  background-color: transparent;
-  width: 100%;
-  padding: 5px 15px;
-  font-weight: 600;
-  text-align: center;
-  position: relative;
-}
-
-.translation-body {
-  font-size: 15px;
-  padding: 10px;
-  border-top-__MSG_@@bidi_end_edge__-radius: 10px;
-}
-
-.ar-translation {
-  font-size: 17px;
-  direction: rtl;
-}
-
-.toolbar-link {
-  opacity: .5;
-  cursor: pointer;
-  transition: all .2s;
-  position: absolute;
-  top: 10px;
-  height: 30px;
-}
-
-.rate-link img,
-.favorites-btn img {
-  height: 30px;
-}
-
-.hijri-date-en {
-  direction: ltr;
-  font-family: sans-serif;
-}
-
-.settings-link {
-  __MSG_@@bidi_end_edge__: 10px;
-}
-
-.calendar-btn {
-  __MSG_@@bidi_end_edge__: 55px;
-}
-
-.rate-link {
-  __MSG_@@bidi_end_edge__: 100px;
-}
-
-.favorites-btn {
-  __MSG_@@bidi_end_edge__: 145px;
-}
-
-.reload {
-  __MSG_@@bidi_start_edge__: 10px;
-}
-
-.report {
-  __MSG_@@bidi_start_edge__: 45px;
-}
-
-.reload .loader,
-.report .loader {
-  font-size: 20px !important;
-}
-
-.toolbar-link:hover {
-  opacity: 1;
-}
-
-.audio-player .error {
-  display: none;
-}
-
-.content-container {
-  display: flex;
-  width: 70%;
-  padding-left: 1em;
-  padding-right: 1em;
-  padding-top: 2em;
-  flex-direction: column;
-}
-
-.content-container .content {
-  text-align: center;
-}
-
-.verse-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-
-.top-sites-container {
-  flex-direction: column;
-  margin-top: 10px;
-}
-
-.top-sites-container a {
-  text-overflow: ellipsis;
-  text-align: __MSG_@@bidi_start_edge__;
-  font-size: 13px;
-  background-color: #fff;
-  color: #333;
-  text-decoration: none;
-  padding: 7px;
-  width: fit-content;
-  opacity: .8;
-  transition: all .2s;
-  margin-bottom: 5px;
-  position: relative;
-  border-radius: 10px;
-  display: inline-block;
-  margin-__MSG_@@bidi_start_edge__: 10px;
-}
-
-.top-sites-container a:hover {
-  opacity: 1;
-}
-
-.top-sites-container a .remove {
-  position: absolute;
-  __MSG_@@bidi_end_edge__: -8px;
-  top: -10px;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background-color: #000;
-  text-align: center;
-  color: #fff;
-  line-height: 1.4;
-  font-family: sans-serif;
-  display: none;
-  cursor: pointer;
-  z-index: 2;
-}
-
-.top-sites-container a:hover .remove {
-  display: block;
-}
-
-.top-sites-container a img {
-  width: 16px;
-  margin-__MSG_@@bidi_end_edge__: 6px;
-  margin-bottom: 2px;
-}
-
-.calendar-container .btn-close {
-  float: __MSG_@@bidi_end_edge__ !important;
-  height: 1px;
-  width: 1px;
-}
-
-.athkar-container .title {
-  width: fit-content;
-  margin-left: auto;
-  margin-right: auto;
-  border-bottom: 1px solid;
-  padding-bottom: 3px;
-  margin-bottom: 15px;
-}
-
-.gregorian-date, .holidays {
-  font-size: 20px;
-  opacity: .8;
-}
-
-.hijri-date {
-  font-size: 30px;
-}
-
-.date-container {
-  text-align: center;
-  font-family: QuranFont;
-  direction: __MSG_@@bidi_dir__;
-  word-spacing: 10px;
-}
-
-.calendar-container {
-  width: 100%;
-  min-height: calc(100% + 60px);
-  background-color: #fff;
-  position: absolute;
-  left: 0;
-  top: -200%;
-  transition: top .6s ease-in, opacity .4s ease-in-out;
-  color: #333;
-  opacity: 0;
-}
-
-.calendar-container:not(.show) {
-  z-index: -100;
-}
-
-.calendar-container.show {
-  top: 0;
-  opacity: 1;
-  z-index: 100;
-}
-
-.close-calendar {
-  padding-__MSG_@@bidi_end_edge__: 10px !important;
-  font-size: 2.5rem;
-}
-
-.close-calendar:active,
-.close-calendar:focus {
-  outline: none;
-}
-
-.calendar {
-  background-color: white;
-  border: 1px solid #e1e1e1;
-  box-shadow: 0px 0px 8px rgb(204 204 204 / 60%);
-}
-
-.calendar__week,
-.calendar__header {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);  
-}
-.calendar__week {
-  grid-auto-rows: max-content;
-  text-align: right;
-}
-
-.calendar__header {
-  grid-auto-rows: 50px;
-  align-items: center;
-  text-align: center;
-  background-color: #025250;
-  color: #fff;
-}
-
-.calendar__day {
-  padding: 16px;
-}
-
-.calendar__header > div {
-  text-transform: uppercase;
-  font-size: 0.8em;
-  font-weight: bold;
-}
-
-.calendar__day {
-  border-__MSG_@@bidi_end_edge__: 1px solid #e1e1e1;
-  border-top: 1px solid #e1e1e1;
-}
-
-.calendar__day:last-child {
-  border-__MSG_@@bidi_end_edge__: 0;
-}
-
-.calendar__day .calendar-note {
-  display: block;
-  width: fit-content;
-  margin: 2px 0 0 auto;
-  max-width: 70px;
-  white-space: inherit;
-}
-
-.not-month-day {
-  background-color: #ebebeb;
-}
-
-.calendar__day.today {
-  background-color: #025250bd;
-  color: #fff;
-}
-
-.calendar-hijri-date {
-  display: block;
-}
-
-.calendar__day:not(.today) .calendar-hijri-date {
-  color: #999;
-}
-
-#hijriMonth {
-  color: #999;
-}
-
-.swal2-icon {
-  width: 2em !important;
-  height: 2em !important;
-  line-height: 2em !important;
-}
-
-.swal2-icon-content {
-  font-size: 1.9em !important;
-}
-
-.swal2-content {
-  text-align: __MSG_@@bidi_start_edge__ !important
-}
-
-.new-features-list {
-  text-align: __MSG_@@bidi_start_edge__ !important;
-}
-
-.verse-social-links {
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-.verse-social-links img {
-  height: 24px;
-  width: 24px;
-}
-
-.verse-social-links a,
-.verse-social-links a:hover {
-  text-decoration: none;
-}
-
-.prayer-times-container {
-  position: absolute;
-  left: 10px;
-  top: 35%;
-  background-color: rgba(255, 255, 255, .7);
-  padding: 10px;
-  border-radius: 10px;
-  color: #333;
-  max-width: 200px;
-  word-spacing: 4px;
-  padding-right: 25px;
-  padding-bottom: 30px;
-}
-
-.prayer-times-icon {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  width: 20px;
-  height: 20px;
-}
-
-.prayer-time {
-  padding-__MSG_@@bidi_start_edge__: 30px;
-  position: relative;
-}
-
-.prayer-time:not(:last-child) {
-  margin-bottom: 15px;
-}
-
-.prayer-time:before {
-  content: '';
-  height: 24px;
-  width: 24px;
-  background-repeat: no-repeat;
-  position: absolute;
-  left: 0;
-  top: 0;
-}
-
-.prayer-time.fajr:before {
-  background-image: url(../assets/fajr.svg);
-}
-
-.prayer-time.dhuhr:before {
-  background-image: url(../assets/dhuhr.svg);
-}
-
-.prayer-time.asr:before {
-  background-image: url(../assets/asr.svg);
-}
-
-.prayer-time.maghrib:before {
-  background-image: url(../assets/maghrib.svg);
-}
-
-.prayer-time.isha:before {
-  background-image: url(../assets/isha.svg);
-}
-
-.next-prayer {
-  margin-top: 10px;
-  font-size: 1.2rem;
-  background-color: rgba(255, 255, 255, .7);
-  color: #333;
-  text-align: center;
-  border-radius: 10px;
-}
-
-.favorite-verses .verse {
-  opacity: 1;
-  text-align: right;
-  font-size: 20px;
-}
-
-.favorite-verses .verse:not(:last-child) {
-  border-bottom: 1px solid #ccc;
+.verse,
+.bismillah,
+.athkar-container,
+.prayer-times-container,
+.next-prayer,
+.date-container,
+.favorite-verses .verse-text {
+  font-family: QuranFont, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .hide {
   display: none !important;
 }
 
+.top-toolbar {
+  position: fixed;
+  top: 0.85rem;
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  z-index: 15;
+  padding: 0.45rem;
+  border-radius: 999px;
+  background: rgba(7, 13, 22, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 12px 35px rgba(2, 6, 10, 0.3);
+  backdrop-filter: blur(12px);
+}
+
+.toolbar-link {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  display: grid;
+  place-content: center;
+  cursor: pointer;
+  opacity: 0.82;
+  transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.toolbar-link:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+  background: rgba(var(--accent-rgb), 0.24);
+}
+
+.toolbar-link img {
+  width: 20px;
+  height: 20px;
+}
+
+.reload .loader {
+  font-size: 14px !important;
+  margin: 0;
+}
+
+.date-container {
+  margin-top: 4.8rem;
+  text-align: center;
+  padding: 0.8rem 1.3rem;
+  border-radius: 18px;
+  border: var(--surface-border);
+  background: var(--surface-soft);
+  backdrop-filter: blur(12px);
+  word-spacing: 0.3rem;
+  box-shadow: 0 10px 28px rgba(5, 10, 16, 0.3);
+  max-width: 94vw;
+}
+
+.gregorian-date,
+.holidays {
+  font-size: 1.03rem;
+  color: var(--text-soft);
+}
+
+.hijri-date {
+  font-size: 1.7rem;
+  line-height: 1.45;
+}
+
+.next-prayer {
+  margin-top: 0.65rem;
+  font-size: 1rem;
+  color: #f5fffa;
+  background: rgba(var(--accent-rgb), 0.28);
+  border: 1px solid rgba(var(--accent-rgb), 0.7);
+  border-radius: 999px;
+  padding: 0.36rem 0.8rem;
+  line-height: 1.35;
+}
+
+.content-container {
+  margin-top: 1rem;
+  width: min(1080px, 94vw);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.content-container form {
+  width: min(700px, 100%);
+}
+
+.search-bar {
+  width: 100%;
+  border-radius: 999px;
+  padding: 0.88rem 1.2rem;
+  color: var(--text-main);
+  border: var(--surface-border);
+  background: var(--surface-soft);
+  backdrop-filter: blur(var(--surface-blur));
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-bar::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.search-bar:focus {
+  outline: none;
+  border-color: rgba(var(--accent-rgb), 0.95);
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.16);
+}
+
+.verse-container {
+  width: min(860px, 100%);
+  border-radius: var(--surface-radius);
+  border: var(--surface-border);
+  background: var(--surface-bg);
+  backdrop-filter: blur(var(--surface-blur));
+  box-shadow: 0 22px 45px rgba(1, 6, 12, 0.45);
+  padding: 1.6rem 1.5rem;
+  text-align: center;
+}
+
+.bismillah {
+  font-size: 1.45rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 0.4rem;
+}
+
+.verse {
+  opacity: 0;
+  transition: opacity 0.55s ease;
+}
+
+.verse.show {
+  opacity: 1;
+}
+
+.verse-text {
+  font-size: var(--verse-font-size);
+  line-height: 2.08;
+  word-spacing: 0.45rem;
+  margin-bottom: 0.9rem;
+}
+
+.verse-details {
+  font-size: 1.16rem;
+  color: var(--text-soft);
+}
+
+.translation-container {
+  margin-top: 1.2rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+.translation-container .title {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.86);
+  padding: 0.72rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.translation-body {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.93);
+  padding: 0.95rem 1rem 1.05rem;
+}
+
+.ar-translation {
+  font-size: 1.07rem;
+  direction: rtl;
+}
+
+.audio-player {
+  width: fit-content;
+  margin: 0.95rem auto 0.6rem;
+  padding: 0.25rem 0.95rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(0, 0, 0, 0.18);
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  cursor: pointer;
+}
+
+.audio-player img {
+  width: 30px;
+  height: 30px;
+  opacity: 0.9;
+  transition: opacity 0.2s ease;
+}
+
+.audio-player:hover img {
+  opacity: 1;
+}
+
+.audio-player .error {
+  display: none;
+  font-size: 0.88rem;
+  color: #ffd2c8;
+}
+
+.audio-player .loader {
+  font-size: 13px !important;
+  margin: 0;
+}
+
+.verse-social-links {
+  margin-top: 0.85rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.58rem;
+}
+
+.verse-social-links img {
+  width: 22px;
+  height: 22px;
+}
+
+.verse-social-links a {
+  text-decoration: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: grid;
+  place-content: center;
+  opacity: 0.82;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.verse-social-links a:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.top-sites-container {
+  width: min(820px, 100%);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.58rem;
+}
+
+.top-sites-container a {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 220px;
+  color: var(--text-main);
+  text-decoration: none;
+  padding: 0.48rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(7, 15, 26, 0.66);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  position: relative;
+  font-size: 0.88rem;
+}
+
+.top-sites-container a:hover {
+  border-color: rgba(var(--accent-rgb), 0.86);
+  background: rgba(var(--accent-rgb), 0.25);
+}
+
+.top-sites-container a img {
+  width: 15px;
+  height: 15px;
+  margin-inline-end: 0.35rem;
+  margin-bottom: 2px;
+}
+
+.top-sites-container a .remove {
+  position: absolute;
+  inset-inline-end: -6px;
+  top: -8px;
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.82);
+  text-align: center;
+  color: #fff;
+  line-height: 1.32;
+  display: none;
+  cursor: pointer;
+}
+
+.top-sites-container a:hover .remove {
+  display: block;
+}
+
+.athkar-container {
+  width: min(860px, 94vw);
+  margin: 0.7rem auto 0.6rem;
+  border-radius: var(--surface-radius);
+  border: var(--surface-border);
+  background: var(--surface-bg);
+  backdrop-filter: blur(var(--surface-blur));
+  box-shadow: 0 20px 42px rgba(1, 6, 12, 0.34);
+  padding: 1.25rem 1.2rem;
+  text-align: center;
+}
+
+.athkar-container .title {
+  display: inline-block;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.32);
+  padding-bottom: 0.32rem;
+  margin-bottom: 0.95rem;
+}
+
+.athkar-container .thikr-arabic {
+  font-size: 1.65rem;
+  line-height: 1.95;
+  display: block;
+  direction: rtl;
+}
+
+.athkar-container .translations {
+  margin-top: 0.7rem;
+}
+
+.athkar-container .thikr-translation-title,
+.athkar-container .thikr-transliteration-title {
+  display: block;
+  margin: 0.45rem 0 0.22rem;
+  font-size: 1.02rem;
+  font-weight: 600;
+}
+
+.athkar-container .thikr-english,
+.athkar-container .thikr-ar-en {
+  display: block;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--text-soft);
+}
+
+.athkar-container .thikr-ar-en {
+  font-style: italic;
+}
+
+.prayer-times-container {
+  position: fixed;
+  inset-inline-start: 1rem;
+  top: 33%;
+  width: min(238px, calc(100vw - 2rem));
+  border-radius: 18px;
+  border: var(--surface-border);
+  background: var(--surface-bg);
+  color: var(--text-main);
+  padding: 1rem 0.95rem 0.9rem;
+  box-shadow: 0 12px 30px rgba(1, 6, 12, 0.35);
+  backdrop-filter: blur(14px);
+  z-index: 9;
+}
+
+.prayer-times-container h6 {
+  margin-bottom: 0.7rem !important;
+}
+
+.prayer-times-wrapper {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.prayer-time {
+  padding-inline-start: 1.85rem;
+  position: relative;
+  font-size: 0.96rem;
+}
+
+.prayer-time::before {
+  content: "";
+  height: 20px;
+  width: 20px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  inset-inline-start: 0;
+  top: 1px;
+}
+
+.prayer-time.fajr::before {
+  background-image: url(../assets/fajr.svg);
+}
+
+.prayer-time.dhuhr::before {
+  background-image: url(../assets/dhuhr.svg);
+}
+
+.prayer-time.asr::before {
+  background-image: url(../assets/asr.svg);
+}
+
+.prayer-time.maghrib::before {
+  background-image: url(../assets/maghrib.svg);
+}
+
+.prayer-time.isha::before {
+  background-image: url(../assets/isha.svg);
+}
+
+.prayer-times-icon {
+  width: 17px;
+  height: 17px;
+  opacity: 0.8;
+  margin-inline-start: 0.25rem;
+}
+
+.calendar-container {
+  width: 100%;
+  min-height: 100vh;
+  background: #ecf1f4;
+  position: fixed;
+  inset: 0;
+  transform: translateY(-105%);
+  transition: transform 0.45s ease, opacity 0.35s ease;
+  color: #233241;
+  opacity: 0;
+  z-index: -10;
+  overflow-y: auto;
+}
+
+.calendar-container.show {
+  transform: translateY(0);
+  opacity: 1;
+  z-index: 100;
+}
+
+.calendar-container .btn-close {
+  float: __MSG_@@bidi_end_edge__ !important;
+}
+
+.calendar {
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 36px rgba(25, 39, 54, 0.15);
+}
+
+.calendar__week,
+.calendar__header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.calendar__header {
+  min-height: 52px;
+  align-items: center;
+  text-align: center;
+  background-color: var(--accent-color);
+  color: #fff;
+}
+
+.calendar__header > div {
+  font-size: 0.81rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.calendar__day {
+  padding: 0.85rem 0.5rem;
+  text-align: __MSG_@@bidi_end_edge__;
+  border-__MSG_@@bidi_end_edge__: 1px solid #d8e0e9;
+  border-top: 1px solid #d8e0e9;
+  min-height: 74px;
+}
+
+.calendar__day:last-child {
+  border-__MSG_@@bidi_end_edge__: 0;
+}
+
+.not-month-day {
+  background-color: #edf1f5;
+}
+
+.calendar__day.today {
+  background-color: rgba(var(--accent-rgb), 0.18);
+}
+
+.calendar-hijri-date {
+  display: block;
+  color: #667381;
+}
+
+.calendar__day.today .calendar-hijri-date {
+  color: #233241;
+}
+
+.calendar-note {
+  display: block;
+  width: fit-content;
+  margin-top: 2px;
+  margin-inline-start: auto;
+  max-width: 90%;
+  white-space: normal;
+}
+
+.favorite-verses {
+  background: #f4f7fa;
+}
+
+.favorite-verses .verse {
+  opacity: 1;
+  text-align: __MSG_@@bidi_start_edge__;
+  font-size: 1.1rem;
+  color: #1f2f41;
+  padding-bottom: 0.9rem;
+  margin-bottom: 0.9rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.favorite-verses .verse:last-child {
+  border-bottom: 0;
+  margin-bottom: 0;
+}
+
+.favorite-verses .verse-actions .btn-link {
+  color: var(--accent-color) !important;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.swal2-icon {
+  width: 2em !important;
+  height: 2em !important;
+}
+
+.swal2-content,
+.new-features-list {
+  text-align: __MSG_@@bidi_start_edge__ !important;
+}
+
+.hijri-date-en {
+  direction: ltr;
+}
+
 @media screen and (min-width: 992px) {
   .calendar {
-    width: 70%;
+    width: min(980px, 90vw);
     margin: 0 auto;
   }
 }
 
-@media screen and (max-width: 991px) {
-  .content-container {
-    flex-direction: column;
-    align-items: center;
+@media screen and (max-width: 1200px) {
+  .prayer-times-container {
+    position: static;
+    margin: 0.9rem auto 0;
+    inset-inline-start: auto;
+    top: auto;
+    width: min(780px, 94vw);
   }
 
-  .audio-player {
-    margin-bottom: 15px;
-  }
-
-  .top-sites-container {
-    align-items: center;
+  .date-container {
+    margin-top: 4.5rem;
   }
 }
 
-
-@media (prefers-color-scheme: dark) {
-  .calendar-container {
-    background-color: #202020;
-    color: #fffefe;
+@media screen and (max-width: 780px) {
+  .top-toolbar {
+    top: 0.55rem;
+    gap: 0.45rem;
+    padding: 0.38rem;
   }
 
-  .calendar {
-    box-shadow: 0px 0px 5px #0e0e0e;
-    background-color: #383838;
+  .toolbar-link {
+    width: 34px;
+    height: 34px;
   }
 
-  .not-month-day {
-    background-color: #4d4d4d;
+  .toolbar-link img {
+    width: 18px;
+    height: 18px;
   }
 
-  .calendar__day,
-  .calendar {
-    border-color: #636363;
+  .date-container {
+    margin-top: 4rem;
+    width: calc(100% - 1rem);
   }
 
-  .close-calendar,
-  .close-calendar:hover {
-    color: #fff;
+  .hijri-date {
+    font-size: 1.45rem;
   }
 
-  .calendar-container .btn-close {
-    filter: invert(1) grayscale(100%) brightness(200%);
+  .verse-container,
+  .athkar-container {
+    padding: 1.1rem 0.95rem;
+    border-radius: 16px;
+  }
+
+  .verse-text {
+    font-size: clamp(1.35rem, 6vw, var(--verse-font-size));
+    line-height: 1.9;
+  }
+
+  .top-sites-container a {
+    max-width: calc(100% - 1rem);
+  }
+
+  .calendar__day {
+    min-height: 60px;
+    font-size: 0.88rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
   }
 }
