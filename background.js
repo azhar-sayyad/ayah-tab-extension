@@ -66,7 +66,7 @@ function getNewCalendar () {
           "day": hijriDate.iDate()
         }
       });
-      fetch('http://api.aladhan.com/v1/hToG?date=' + hijriDate.iDate() + "-" + (hijriDate.iMonth() + 1) + "-" + hijriDate.iYear())
+      fetch('https://api.aladhan.com/v1/hToG?date=' + hijriDate.iDate() + "-" + (hijriDate.iMonth() + 1) + "-" + hijriDate.iYear())
       .then((response) => response.json())
         .then(function (data) {
           hijriHolidays.splice(this.i, 0, data.data.hijri.holidays);
