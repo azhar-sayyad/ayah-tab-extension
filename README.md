@@ -2,7 +2,7 @@
 
 ![Quran In New Tab](https://github.com/shahednasser/quran-extension/blob/master/assets/icon-128.png?raw=true "Quran In New Tab")
 
-Replace the new tab page with Quran verses and beautiful nature pictures. The verses and pictures are randomly generated hourly. You can choose to show or hide your top sites.
+This is a maintained fork of the original Quran In New Tab project by Shahed Nasser. It replaces the new tab page with Quran verses and beautiful nature pictures, and this fork includes ongoing modifications and branding improvements.
 
 **You can find the firefox extension [here](https://github.com/shahednasser/quran-extension-firefox)**
 
@@ -17,6 +17,7 @@ Replace the new tab page with Quran verses and beautiful nature pictures. The ve
 	- [Prayer Times](#prayer-times)
 	- [Credits](#credits)
 	- [Issues](#issues)
+	- [Attribution](#attribution)
 	- [License](#license)
 
 <!-- /TOC -->
@@ -69,9 +70,17 @@ Starting from version 2.1.2, you can now see prayer times and change their calcu
 
 If you find any issues or bugs, please create a Github issue.
 
+## Attribution
+This project is based on the original open-source project created by Shahed Nasser.
+
+Original project: [Quran In New Tab](PASTE_ORIGINAL_REPO_LINK_HERE)
+
+This fork includes modifications, branding updates, and additional improvements by Azhar.
+
+Licensed under the MIT License.
 
 ## License
 
-Copyright © 2021 Shahed Nasser
+Copyright © 2021 Shahed Nasser and 2026 Azhar
 
-Licensed under the [MIT License](https://github.com/shahednasser/quran-extension/blob/master/LICENSE).
+Licensed under the [MIT License](./LICENSE).
